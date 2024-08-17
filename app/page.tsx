@@ -7,10 +7,11 @@ import Image from "next/image";
 import { Badge } from "./_components/ui/badge";
 import { Avatar, AvatarImage } from "./_components/ui/avatar";
 import { Card, CardContent } from "./_components/ui/card";
+import BarbershopItems from "./_components/barbershop-items";
 
 const Home = async () => {
-  // const barbershops = await db.barbershop.findMany({})
-  // console.log({barbershops})
+  const barbershops = await db.barbershop.findMany({})
+
   return (
     <div>
       <Header />
@@ -31,7 +32,7 @@ const Home = async () => {
       </div>
 
       <div className="p-5">
-        <h3>Appointments</h3>
+        <h3 className="text-gray-400 font-xs font-bold uppercase">Appointments</h3>
         <Card className="mt-6">
           <CardContent className="flex py-5 justify-between">
             <div className="flex flex-col gap-2"> 
@@ -52,6 +53,15 @@ const Home = async () => {
           </CardContent>
         </Card>
       </div>
+
+      <div className="p-5">
+        <h3 className="text-gray-400 font-xs font-bold uppercase">Recomendations</h3>
+      </div>
+      <div className="flex flex-row gap-4 p-5 overflow-auto [&:: -webkit-scrollbar]:hidden"> 
+        {barbershops.map((barbershop) => (
+          <BarbershopItems key={barbershop.id} barbershop={barbershop} />
+        ))}
+      </div>      
     </div>
   );
 }
