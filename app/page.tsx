@@ -67,7 +67,7 @@ const Home = async () => {
         ))}
       </div>  
 
-      <footer>
+      <footer className="pt-6">
         <Card>
           <CardContent className="px-5 py-6">
             <p className="text-sm font-bold text-gray-400">© 2024 Copyright Walber Menezes</p>
