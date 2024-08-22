@@ -1,6 +1,7 @@
 import { db } from "@/app/_lib/prisma";
 import BarbershopInfo from "./_components/barbershop-info";
 import ServiceItem from "./_components/service-item";
+import { Card, CardContent } from "@/app/_components/ui/card";
 
 interface BarbershopDetailsPagesProps {
     params: any
@@ -35,6 +36,14 @@ const BarbershopDetailsPages = async ({params}: BarbershopDetailsPagesProps) => 
                     <ServiceItem key={service.id} service={service} />
                 ))}
             </div>
+
+            <footer className="pt-6">
+                <Card>
+                    <CardContent className="px-5 py-6">
+                        <p className="text-sm font-bold text-gray-400">© 2024 Copyright Walber Menezes</p>
+                    </CardContent>
+                </Card>
+            </footer>
         </div>
      );
 }
