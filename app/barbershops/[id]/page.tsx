@@ -1,9 +1,9 @@
 import { db } from "@/app/_lib/prisma";
 import BarbershopInfo from "./_components/barbershop-info";
 import ServiceItem from "./_components/service-item";
-import { Card, CardContent } from "@/app/_components/ui/card";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import PhoneItem from "@/app/_components/phone-item";
 
 interface BarbershopDetailsPagesProps {
     params: any
@@ -35,18 +35,17 @@ const BarbershopDetailsPages = async ({params}: BarbershopDetailsPagesProps) => 
             <BarbershopInfo barbershop={barbershop} />
     
             <div className="px-5 flex flex-col gap-4 py-6">
+                <h2 className="text-xs font-bold uppercase text-gray-400">Services:</h2>
                 {barbershop.services.map((service) => (
                     <ServiceItem key={service.id} service={service} />
                 ))}
             </div>
 
-            <footer className="pt-6">
-                <Card>
-                    <CardContent className="px-5 py-6">
-                        <p className="text-sm font-bold text-gray-400">© 2024 Copyright Walber Menezes</p>
-                    </CardContent>
-                </Card>
-            </footer>
+            <div className="p-5 space-y-3">
+                {barbershop.phones.map((phone) => (
+                    <PhoneItem key={phone} phone={phone} />
+                ))}
+            </div>
         </div>
      );
 }

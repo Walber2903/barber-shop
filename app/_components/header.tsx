@@ -5,7 +5,7 @@ import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
 import { MenuIcon } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
-import SideMennu from "./side-menu";
+import SideMenu from "./side-menu";
 
 const Header = () => {
     return ( 
@@ -20,7 +20,7 @@ const Header = () => {
                     </SheetTrigger>
 
                     <SheetContent className="p-0">
-                        <SideMennu />
+                        <SideMenu />
                     </SheetContent>
                 </Sheet>
             </CardContent>

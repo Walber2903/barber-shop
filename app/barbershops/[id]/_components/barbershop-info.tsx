@@ -53,6 +53,10 @@ const BarbershopInfo = ({ barbershop }: BarbershopInfoProps) => {
                     <p className="text-sm text-white">4.99 (899 ratings)</p>
                 </div>
             </div>
+            <div className="space-y-2 border-b border-solid p-5">
+                <h2 className="text-xs font-bold uppercase text-gray-400">About us:</h2>
+                <p className="text-justify text-sm">{barbershop?.description}</p>
+            </div>
 
         </div>
     );

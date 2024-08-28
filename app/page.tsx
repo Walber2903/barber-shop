@@ -4,7 +4,6 @@ import { Button } from "./_components/ui/button";
 import { Input } from "./_components/ui/input";
 import { db } from "./_lib/prisma";
 import Image from "next/image";
-import { Card, CardContent } from "./_components/ui/card";
 import BarbershopItems from "./_components/barbershop-items";
 import { quickSearchOptions } from "./_constants/search"
 import AppointmentItem from "./_components/appointments";
@@ -66,14 +65,6 @@ const Home = async () => {
           <BarbershopItems key={popularBarbershop.id} barbershop={popularBarbershop} />
         ))}
       </div>  
-
-      <footer className="pt-6">
-        <Card>
-          <CardContent className="px-5 py-6">
-            <p className="text-sm font-bold text-gray-400">© 2024 Copyright Walber Menezes</p>
-          </CardContent>
-        </Card>
-      </footer>
     </div>
   );
 }

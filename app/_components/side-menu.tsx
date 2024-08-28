@@ -6,13 +6,16 @@ import { Button } from "./ui/button";
 import { SheetHeader, SheetTitle } from "./ui/sheet";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import { quickSearchOptions } from "../_constants/search";
+import Image from "next/image";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
 
-const SideMennu = () => {
+const SideMenu = () => {
     const {data} = useSession();
 
     const handleLogoutClick = () => signOut();
 
-    const handleLoginClick = () => signIn();
+    const handleLoginWithGoogleClick = async () => await signIn("google");
     
     return ( 
         <>
@@ -29,28 +32,41 @@ const SideMennu = () => {
                             <AvatarImage src={data.user.image ?? ""} />
                         </Avatar>
 
-                        <h2 className="font-bold">{data.user.name}</h2>
+                        <div className="flex flex-col">
+                            <h2 className="font-bold">{data.user.name}</h2>
+                            <p className="text-sm text-gray-400">{data.user.email}</p>
+                        </div>
                     </div>
-
-                    <Button variant="secondary" size="icon" onClick={handleLogoutClick}>
-                        <LogOutIcon />
-                    </Button>
                 </div>
             ) : (
                 <div className="flex flex-col px-5 py-6 gap-3">
                     <div className="flex items-center gap-2">
                         <UserIcon size={28} />
-                        <h2 className="font-bold">Hello, You need to login.</h2>
+                        <h2 className="font-bold">Hello, You need to sign in.</h2>
                     </div>
 
-                    <Button variant="secondary" className="w-full" onClick={handleLoginClick}>
-                        <LogInIcon className="mr-2" size={18}/>
-                        Login
-                    </Button>
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <Button variant="secondary" className="w-full">
+                                <LogInIcon className="mr-2" size={18}/>
+                                Sign in
+                            </Button>
+                        </DialogTrigger>
+                        <DialogContent className="w-[80%]">
+                            <DialogHeader>
+                                <DialogTitle>Sign in into the platform</DialogTitle>
+                                <DialogDescription>Sign in using your Google account!</DialogDescription>
+                            </DialogHeader>
+                            <Button variant="outline" className="gap-2 font-bold" onClick={handleLoginWithGoogleClick}>
+                                <Image src="google.svg" width={18} height={18} alt="sign in with google" />
+                                Google
+                            </Button>
+                        </DialogContent>
+                    </Dialog>
                 </div>
             )}
 
-            <div className="flex flex-col gap-3 px-5">
+            <div className="flex flex-col gap-3 px-5 pb-5">
                 <Button variant="outline" className="justify-start" asChild>
                     <Link href="/">
                         <HomeIcon size={18} className="mr-2"/>
@@ -67,8 +83,26 @@ const SideMennu = () => {
                     </Button>                                
                 )}
             </div>
+
+            <div className="flex flex-col gap-3 px-5 border-t border-b border-solid py-5">
+                {quickSearchOptions.map((option) => (
+                    <Button variant="ghost" key={option.title} className="justify-start gap-2" asChild>
+                        <Link href="/">
+                            <Image src={option.imageUrl} height={18} width={18} alt={option.title} />
+                            {option.title}                               
+                        </Link>
+                    </Button>
+                ))}
+            </div>
+
+            <div className="flex flex-col gap-3 px-5 border-t border-b border-solid py-5">
+                <Button variant="secondary" className="gap-2" onClick={handleLogoutClick}>
+                    Logout
+                    <LogOutIcon />
+                </Button>
+            </div>
         </>
     );
 }
  
-export default SideMennu;
+export default SideMenu;
