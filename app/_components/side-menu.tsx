@@ -3,7 +3,7 @@
 import { CalendarIcon, HomeIcon, LogInIcon, LogOutIcon, UserIcon } from "lucide-react";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
-import { SheetHeader, SheetTitle } from "./ui/sheet";
+import { SheetClose, SheetHeader, SheetTitle } from "./ui/sheet";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { quickSearchOptions } from "../_constants/search";
@@ -86,12 +86,14 @@ const SideMenu = () => {
 
             <div className="flex flex-col gap-3 px-5 border-t border-b border-solid py-5">
                 {quickSearchOptions.map((option) => (
-                    <Button variant="ghost" key={option.title} className="justify-start gap-2" asChild>
-                        <Link href="/">
-                            <Image src={option.imageUrl} height={18} width={18} alt={option.title} />
-                            {option.title}                               
-                        </Link>
-                    </Button>
+                    <SheetClose key={option.title} asChild>
+                        <Button variant="ghost" className="justify-start gap-2" asChild>
+                            <Link href={`/barbershops?service=${option.title}`}>
+                                <Image src={option.imageUrl} height={18} width={18} alt={option.title} />
+                                {option.title}                               
+                            </Link>
+                        </Button>
+                    </SheetClose>
                 ))}
             </div>
 
