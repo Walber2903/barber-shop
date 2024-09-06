@@ -15,7 +15,7 @@ const SideMenu = () => {
 
     const handleLogoutClick = () => signOut();
 
-    const handleLoginWithGoogleClick = async () => await signIn("google");
+    const handleLoginWithGoogleClick = () => signIn("google");
     
     return ( 
         <>
