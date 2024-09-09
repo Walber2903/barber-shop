@@ -1,14 +1,16 @@
 "use client";
 
+import { createBooking } from "@/app/_actions/create-booking";
 import { Button } from "@/app/_components/ui/button";
 import { Calendar } from "@/app/_components/ui/calendar";
 import { Card, CardContent } from "@/app/_components/ui/card";
 import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/app/_components/ui/sheet";
 import { Barbershop, BarbershopService } from "@prisma/client";
-import { format } from "date-fns";
-import { signIn } from "next-auth/react";
+import { format, setHours, setMinutes } from "date-fns";
+import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
+import { toast } from "sonner";
 
 interface ServiceItemProps {
     service: BarbershopService
@@ -17,23 +19,24 @@ interface ServiceItemProps {
 }
 
 const TIME_LIST = [
-    "09:00 AM",
-    "09:45 AM",
-    "10:30 AM",
-    "11:15 AM",
-    "12:00 PM",
-    "12:45 PM",
-    "01:30 PM",
-    "02:15 PM",
-    "03:00 PM",
-    "03:45 PM",
-    "04:30 PM",
-    "05:15 PM",
-    "06:00 PM",
-    "06:45 PM"
+    "09:00",
+    "09:45",
+    "10:30",
+    "11:15",
+    "12:00",
+    "12:45",
+    "13:30",
+    "14:15",
+    "15:00",
+    "15:45",
+    "16:30",
+    "17:15",
+    "18:00",
+    "18:45"
 ]
 
 const ServiceItem = ({service, barbershop, isAuthenticated}: ServiceItemProps) => {
+    const {data} = useSession()
     const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined);
     const [selectedTime, setSelectedTime] = useState<String | undefined>(undefined)
 
@@ -43,6 +46,28 @@ const ServiceItem = ({service, barbershop, isAuthenticated}: ServiceItemProps) =
 
     const handleSelectedTime = (time: string) => {
         setSelectedTime(time)
+    }
+
+    const handleCreateBooking = async () => {
+        try {
+            if (!selectedDay || !selectedTime) return;
+
+            const hours = selectedTime.split(":")[0]
+            const minutes = selectedTime.split(":")[1]
+
+            const dateWithNewMinutes = setMinutes(selectedDay, Number(minutes))
+            const dateWithHours = setHours(dateWithNewMinutes, Number(hours))
+
+            await createBooking({
+                serviceId: service.id,
+                userId: (data?.user as any).id,
+                date: dateWithHours,
+            })
+            toast.success("Successfuly reservation")
+        } catch (error) {
+            console.error(error)
+            toast.error("Error to confirming reservation")
+        }
     }
 
 
@@ -147,7 +172,7 @@ const ServiceItem = ({service, barbershop, isAuthenticated}: ServiceItemProps) =
 
                                     <SheetFooter className="px-5">
                                         <SheetClose asChild>
-                                            <Button type="submit">Confirm</Button>
+                                            <Button onClick={handleCreateBooking} disabled={!selectedDay || !selectedTime}>Confirm</Button>
                                         </SheetClose>
                                     </SheetFooter>
                                 </SheetContent>
